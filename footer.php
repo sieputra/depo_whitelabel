@@ -3,7 +3,7 @@
 <div class="row">
           <div class="large-4 medium-4 columns">
            <p><a href="index.php"><img src="images/logo-white.png" alt="" style="width:200px;height:auto;"></a></p>
-		   <p>Katalog Sepatu online © 2016 <a href="index.php">Lookbook</a></p>
+		   <p>Katalog Sepatu online © 2016 <a href="index.php">Lookbook - Edited</a></p>
 		   <p>Penjual Sepatu Online terpercaya Anda</p>
           </div>
 
