@@ -1,0 +1,5 @@
+$this->console->exception(new Exception('test exception'));
+$this->console->debug('Debug message');
+$this->console->info('Info message');
+$this->console->warning('Warning message');
+$this->console->error('Error message');

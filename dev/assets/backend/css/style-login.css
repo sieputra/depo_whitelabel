@@ -1,0 +1,44 @@
+.log-in-form {
+  padding: 1rem;
+  border-radius: 3px; margin-top:80px;
+background-color: rgba(255, 255, 255, 0.8);
+box-shadow: 0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28);
+background:none;box-shadow:none;
+}
+
+label {color:#C1EFD7;}
+
+  .logform{padding:20px;}
+
+  a {
+    color: #009688;
+    text-decoration: none;
+    line-height: inherit;
+    cursor: pointer;
+}
+
+.button {
+    background: #009688;
+}
+
+.button:hover {
+    background: #06CEBA;
+}
+
+
+body{
+  background:#444 url(../images/shoes-828414_1280.jpg) no-repeat center center;
+  background-size:cover;
+  box-shadow:inset 0 0 10px 1000px rgba(3,99,99,0.85);
+}
+
+hr {
+    max-width: 75rem;
+    height: 0;
+    border-right: 0;
+    border-top: 0;
+    border-bottom: 1px solid #035959;
+    border-left: 0;
+    margin: 1.25rem auto;
+    clear: both;
+}

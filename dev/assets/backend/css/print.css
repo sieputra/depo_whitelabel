@@ -1,0 +1,32 @@
+
+
+@media print {
+
+@page { 
+    size:210mm 297mm; 
+    margin: 0;
+}	
+	
+ body {
+	font-family: tahoma;
+	background: none;
+	color: black;
+}
+
+.page {
+	width: 100%;
+	margin: 0; padding: 0;
+	background: none;
+}
+
+#sidebar-wrapper, .top-bar , .tab-bar , .ya-tidak, .page h4, .sidebar-nav {display: none !important;}
+
+#page-content-wrapper, .row{max-width:100% !important;width:100% !important;}
+
+#page-content-wrapper {width:210mm;}
+
+#wrapper {padding-left:0px  !important; margin-left:0px !important;}
+
+.ds-invoice{border:none;box-shadow:none;}
+}
+
