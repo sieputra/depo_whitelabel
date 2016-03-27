@@ -1,2 +1,10 @@
 26-03-2016
 First Backend Development Commit 
+
+27-03-2016
+1. Add Database
+2. Add Fitur:
+  a. Login/Logout with Depo username & password
+  b. Prepare Admin Pages (Dashboard to SEO)
+3. Add SQL Schema On sql-dump Folder
+4. See API Call URL & Debug Setting On application/config/constants.php
