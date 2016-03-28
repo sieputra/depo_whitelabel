@@ -41,6 +41,10 @@
 		<li>
 			<?php echo anchor('admin/seo', 'SEO<span class="fi-web" alt="Overview">', array('alt' => 'Shortcuts'));?>
         </li>
+    
+    <li>
+      <?php echo anchor('admin/settings', 'Site Setting<span class="fi-web" alt="Overview">', array('alt' => 'Settings'));?>
+        </li>
     </ul>
 </div>
 <!-- /#sidebar-wrapper -->

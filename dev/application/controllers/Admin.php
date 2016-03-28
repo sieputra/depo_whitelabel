@@ -74,5 +74,23 @@ class Admin extends CI_Controller {
 			$this->load->view('backend/index', $data);
 		}
 	}
+
+  public function load_settings()
+  {
+    if(!($this->get_login_session())){
+      redirect('/admin', 'location', 301);
+    } else {
+      $userlogin = $this->session->userdata('userlogin');
+      $data['js_load'] = $this->load->view('backend/settings/index-js', array(), TRUE);
+      $data['css_load'] = $this->load->view('backend/settings/index-css', array(), TRUE);
+      $param['title'] = ucfirst($page);
+      $data['header'] = $this->load->view('backend/header', $param, TRUE);
+      $data['sidebar'] = $this->load->view('backend/sidebar', array(), TRUE);
+      $param['judullaman'] = ucfirst($page) . ' - Welcome ' . $userlogin->displayname;
+      $data['container'] = $this->load->view('backend/settings/container', $param, TRUE);
+      $data['footer'] = $this->load->view('backend/footer', array(), TRUE);
+      $this->load->view('backend/index', $data);
+    }
+  }
 	
 }
