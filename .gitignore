@@ -11,5 +11,5 @@
 !*/cache/index.html
 !*/cache/.htaccess
 
-dev/application/config/database.php
-dev/application/cache/*
+*/dev/application/config/database.php
+*/dev/application/cache/*
