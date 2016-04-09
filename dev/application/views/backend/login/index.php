@@ -35,8 +35,8 @@
           </label>
           <p><a type="submit" id="btn-submit" class="button expanded" href="#">Log In</a></p>
           
-			<div data-alert class="alert-box secondary" style="display:none" >
-			  <span id="message">This is a secondary alert.</span>
+			<div data-alert class="alert-box secondary" <?php echo (isset($_SESSION['resp'])) ? '' : 'style="display:none"' ; ?> >
+			  <span id="message"><?php echo (isset($_SESSION['resp'])) ? $_SESSION['resp'] : '' ; ?></span>
 			  <a href="#" class="close">&times;</a>
 			</div>
           <hr>
