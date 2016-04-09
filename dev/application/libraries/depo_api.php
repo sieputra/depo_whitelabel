@@ -1,10 +1,10 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Depo_api {
-    public function __construct()
-    {
-        
-    }
+  public function __construct()
+  {
+      
+  }
 	
 	/*
 	 * Params Index:
