@@ -8,3 +8,15 @@ First Backend Development Commit
   b. Prepare Admin Pages (Dashboard to SEO)
 3. Add SQL Schema On sql-dump Folder
 4. See API Call URL & Debug Setting On application/config/constants.php
+
+10-04-2016
+1  Make Flow On 1st install
+   - login, when settings is empty admin menu appear only dashboard and setting
+   - When Init Categories, Attributes & Tags Already Processed on setting pages, product menu appear
+   - In product page, when product count is 0, init button is appear
+   - Click the button and populate products table with data from deposepatu
+2. Fetch Categories, Tags, Attributes Master from Depo Sepatu
+3. Fetch Product From Depo Sepatu 
+4. Menu Admin - Product is fill with products data, when initialization proccess is already made
+5. Menu Admin - General is done
+6. First Front end dev from dummy, Controller : Home.php
