@@ -52,9 +52,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'home';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+
+
+$route['admin'] = "admin/index";
 $route['admin/user/logout'] = "admin/logout";
 $route['admin/user/login'] = "admin/login";
 $route['admin/user/settings'] = "admin/load_settings";
 $route['admin/init/(:any)'] = "admin/init_table";
 $route['admin/(:any)'] = "admin/load_admin_pages/$1";
+$route['admin/(:any)/(:any)'] = "admin/load_admin_pages/$1/$2";
+$route['admin/(:any)/(:any)/(:num)'] = "admin/load_admin_pages/$1/$2/$3";
 
+
+$route['(:any)'] = "home/load_page/$1";

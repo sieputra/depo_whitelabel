@@ -15,7 +15,7 @@
         <li>
           <?php echo anchor('admin/products', 'Product<span class="fi-pricetag-multiple" alt="Services">', array('alt' => 'Shortcuts'));?>
         </li>
-        <?php if(count($page_data['data']) != 0){ ?>
+        <?php if($page_data['prd_count'] != 0){ ?>
         <li>
         	<?php echo anchor('admin/general', 'General Setting<span class="fi-graph-bar" alt="Shortcuts">', array('alt' => 'Shortcuts'));?>
         </li>
