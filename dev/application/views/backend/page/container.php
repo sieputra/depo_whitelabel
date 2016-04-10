@@ -14,17 +14,43 @@
 </div>
 
 <div class="row page" >
+  <?php if(isset($msg)) {?>
+  <div data-alert class="alert-box info">
+    <p>
+    <?php echo $msg;?>
+    </p>
+    <a href="#" class="close">&times;</a>
+  </div>
+  <?php } ?>
 	<div class="large-12 columns">
-	<div data-alert class="alert-box info">
-	  <p>
-	  Selamat Datang di DepoSepatu Reseller Dashboard, Kamu bisa mulai memanage penjualan dan website kamu di sini. 
-	  Silahkan untuk menjelajahi Dashboard dan mulai memanage website kamu. Jika ada masalah jangan ragu untuk menghubungi Kami. 
-	  <strong>Ganbatte !!! ^^</strong>
-	  </p>
-	  <a href="#" class="close">&times;</a>
+	  <?php echo anchor('admin/page/add', 'Tambah Halaman', array('class' => 'button small right'));?>
+  	<table>
+      <thead>
+      <tr>
+        <th width="">Judul</th>
+        <th width="200">Tanggal</th>
+        <th width="50">Edit</th>
+      </tr>
+      </thead>
+      <tbody>
+        <?php 
+        foreach ($page_data['data'] as $key => $page) {
+          ?>
+          <tr>
+            <td>
+              <?php echo $page->title; ?>
+            </td>
+            <td><small>Terakhir edit pada</small><br> <?php echo date('d/m/Y' , strtotime($page->date_updated)); ?></td>
+            <td>
+              <?php echo anchor('admin/page/edit/' .$page->id , '<i class="fa fa-pencil-square-o fa-lg"></i>', array('alt' => 'Edit'));?>
+            </td>
+          </tr>
+          <?php    
+        }
+        ?>
+      </tbody>
+    </table>
 	</div>
-	</div>
-	
 </div>
 <!-- /#page-content-wrapper -->
 </div>

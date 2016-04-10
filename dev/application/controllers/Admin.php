@@ -70,9 +70,9 @@ class Admin extends CI_Controller {
 		}
 	}
 	
-  public function do_action($page = 'dashboard'){
+  public function do_action($page = 'dashboard' , $action = '' , $id = -1){
     $retval = array();
-    $this->load->model(array('settings_model','tags_model' , 'attributes_model' , 'categories_model' , 'products_model'));
+    $this->load->model(array('settings_model','tags_model' , 'attributes_model' , 'categories_model' , 'products_model' , 'pages_model'));
     $settings = $this->settings_model->get_settings('settings');
     $consumer_key = $settings['CUSTOMER_KEY']; 
     $consumer_secret = $settings['CUSTOMER_SECRET']; 
@@ -81,9 +81,10 @@ class Admin extends CI_Controller {
     $retval['cat_count'] = $this->categories_model->rec_count();
     $retval['attr_count'] = $this->attributes_model->rec_count();
     $retval['tag_count'] = $this->tags_model->rec_count();
-    $local_data = $this->products_model->get();
-    $retval['data'] = $local_data;
+    $retval['prd_count'] = $this->products_model->rec_count();
     if($page == 'products'){
+      $local_data = $this->products_model->get();
+      $retval['data'] = $local_data;
       $params = array( 'consumer_key' => $consumer_key, 'consumer_secret' => $consumer_secret, 'store_url' => $store_url , 'api_endpoint' => $api_endpoint);
       $this->load->library('wc_api', $params);
       $remote_count = $this->wc_api->get_products_count();
@@ -91,7 +92,6 @@ class Admin extends CI_Controller {
       if($local_count == 0){
         // Need to initialize Data , return empty array
         //return categories count , tags count, attribute count
-        
       } else {
         // Fetch All Data From Database...
         $retval['prd_count'] = $local_count;
@@ -102,11 +102,19 @@ class Admin extends CI_Controller {
           // Maybe Message Firt And then Click Button to update
         }
       }
+    } elseif ($page == 'page'){
+      if($action == 'edit'){
+        $local_data = $this->pages_model->filter(array('id' => $id));
+        $retval['data'] = $local_data[0];
+      } else {
+        $local_data = $this->pages_model->get();
+        $retval['data'] = $local_data;
+      }
     }
     return $retval;
   }
   
-  public function post_on_admin_page($postdata , $page){
+  public function post_on_admin_page($postdata, $getdata , $page , $action , $id){
     if($page == 'general'){
       foreach ($postdata as $key => $value) {
         if ( $this->input->post($key) ){
@@ -114,30 +122,60 @@ class Admin extends CI_Controller {
         }
       }
     }
-    redirect('/admin/'.$page, 'location', 301);
+    if($page == 'page'){
+      $this->load->model('pages_model');
+      if(!empty($id) && $action == 'edit' && isset($postdata) && count($postdata) !== 0 ){
+        //Update Pages
+        $this->pages_model->update(array('update_by' => $_SESSION['userlogin']->username, 'content' => trim($this->input->post('content', true))) , $id);
+        $this->session->set_flashdata('msg', 'Edit Pages Success');
+      } 
+      if($action == 'add' && isset($postdata) && count($postdata) !== 0 ){
+        //Insert Pages
+        //generate page url
+        $count = count($this->pages_model->filter(array('slug' => str_replace(' ', '-', strtolower($this->input->post('title', true))))));
+        $new_url = str_replace(' ', '-', strtolower($this->input->post('title', true)));
+        if($count != 0){
+          $new_url = str_replace(' ', '-', strtolower($this->input->post('title', true))) . '-' . ($count + 1);
+        }
+        $this->pages_model->insert(array('title' => trim($this->input->post('title', true)),
+                                          'content'=> trim($this->input->post('content', true)),
+                                          'slug' => trim($new_url),
+                                          'date_created' => date('Y-m-d G:i:s'),
+                                          'update_by' => $_SESSION['userlogin']->username));
+        $this->session->set_flashdata('msg', 'Insert Pages Success');
+      } 
+    }
+   redirect('/admin/'.$page, 'location', 301);
   }
   
-	public function load_admin_pages($page = 'dashboard')
+	public function load_admin_pages($page = 'dashboard' , $action = '' , $id = -1)
 	{
-    ini_set('display_errors', 0); 
+    ini_set('display_errors', 1); 
     $this->load->model('settings_model');
 		if(!($this->get_login_session())){
 			redirect('/admin', 'location', 301);
-		} else {
+		} else { 
 		  if(isset($_POST) && (count($_POST) !== 0)){
-		    $this->post_on_admin_page($_POST , $page);
+		    $this->post_on_admin_page($_POST , $_GET , $page, $action , $id);
 		  }
       $settings = $this->settings_model->get_settings($page);
 			$userlogin = $this->session->userdata('userlogin');
 			$data['css_load'] = $this->load->view('backend/'.$page.'/index-css', array(), TRUE);
 			$param['title'] = ucfirst($page);
+      $param['css_load'] = $this->load->view('backend/'.$page.'/index-css', array(), TRUE);
 			$param['header'] = $this->load->view('backend/header', $param, TRUE);
-			$param['page_data'] = $this->do_action($page);
+			$param['page_data'] = $this->do_action($page, $action , $id);
 			$data['sidebar'] = $this->load->view('backend/sidebar', $param, TRUE);
 			$param['judullaman'] = ucfirst($page) . ' - Welcome ' . $userlogin->displayname;
       $param['settings'] = $settings;
-			$data['container'] = $this->load->view('backend/'.$page.'/container', $param, TRUE);
-      $fdata['js_load'] = $this->load->view('backend/'.$page.'/index-js', array(), TRUE);
+      if(isset($_SESSION['msg'])){
+        $param['msg'] = $_SESSION['msg'];
+      }
+      echo $action;
+			$data['container'] = $this->load->view('backend/'.$page.'/container' . (!empty($action) ? '-'.$action : ''), $param, TRUE);
+      $param_js['page'] = $page;
+      $param_js['action'] = $action;
+      $fdata['js_load'] = $this->load->view('backend/'.$page.'/index-js', $param_js, TRUE);
 			$data['footer'] = $this->load->view('backend/footer', $fdata, TRUE);
 			$this->load->view('backend/index', $data);
 		}
@@ -145,7 +183,7 @@ class Admin extends CI_Controller {
 
   public function load_settings()
   {
-    ini_set('display_errors', 1);
+    ini_set('display_errors', 0);
     $this->load->model('settings_model');
     $settings = $this->settings_model->get_settings('settings');
     $postdata = $_POST;
@@ -281,6 +319,9 @@ class Admin extends CI_Controller {
                                           'description' => $product->short_description,
                                           'tags' =>implode(',', $product->tags), 
                                           'categories' =>implode(',', $product->categories), 
+                                          'date_local_fetch' => strtotime(date('Y-m-d')),
+                                          'date_remote_created' => $product->created_at,
+                                          'date_remote_updated' => $product->updated_at,
                                           ); 
                   //Variations Array
                 if(isset($product->variations) && (count($product->variations) != 0)){
