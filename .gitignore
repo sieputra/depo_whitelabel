@@ -13,3 +13,5 @@
 
 */dev/application/config/database.php
 */dev/application/cache/*
+
+*/assets/thumbs/*

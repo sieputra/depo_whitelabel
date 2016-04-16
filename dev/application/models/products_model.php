@@ -23,8 +23,11 @@ class Products_model extends CI_Model {
     }
   }
 
-  public function get($num = -1)
+  public function get($num = -1, $order_by = '' , $order_type = 'ASC')
   {
+    if(!empty($order_by)){
+      $this->db->order_by($order_by , $order_type);
+    }  
     if($num !== -1){
       $query = $this->db->get($this->_table_name, $num);
     }else{
@@ -35,6 +38,23 @@ class Products_model extends CI_Model {
       return $rs;
     } else {
         return FALSE;
+    }
+  }
+  
+  public function get_images($id = -1 , $num = -1)
+  {
+    if( $id != -1){
+      if($num !== -1){
+        $query = $this->db->where('id_product' , $id)->get('wc_dimages', $num);
+      }else{
+        $query = $this->db->where('id_product' , $id)->get('wc_dimages');
+      }
+      $rs = $query->result();
+      if(isset($rs)){
+        return $rs;
+      } else {
+          return FALSE;
+      }
     }
   }
 

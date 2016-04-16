@@ -1,5 +1,4 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Admin extends CI_Controller {
   public function debug_me($msg){
@@ -10,9 +9,10 @@ class Admin extends CI_Controller {
   
 	public function __construct() {
         parent::__construct();
-        $this->load->add_package_path(APPPATH.'third_party/debugbar');
-        $this->load->library('krumo');
+        $this->load->helper(array('html'));
     		if(DEPO_DEBUG){
+    		  $this->load->add_package_path(APPPATH.'third_party/debugbar');
+          $this->load->library('krumo');
     		  $this->load->library(array('console'));
           $this->output->enable_profiler(FALSE);
     		}
@@ -70,6 +70,24 @@ class Admin extends CI_Controller {
 		}
 	}
 	
+  private function get_images_on_product($id = -1, $num = -1){
+    if($id != -1 && $num != -1){
+      $this->load->model(array('products_model')); 
+      if($num == 1){
+        $tmp = $this->products_model->get_images($id, $num);
+        if(isset($tmp[0])){
+          return $tmp[0]->src_product; 
+        } else {
+          return FALSE;
+        }
+      } else {
+        return $this->products_model->get_images($id, $num);
+      }
+    } else {
+      return FALSE;
+    }
+  }
+  
   public function do_action($page = 'dashboard' , $action = '' , $id = -1){
     $retval = array();
     $this->load->model(array('settings_model','tags_model' , 'attributes_model' , 'categories_model' , 'products_model' , 'pages_model'));
@@ -86,6 +104,9 @@ class Admin extends CI_Controller {
       $local_data = $this->products_model->get();
       $retval['data'] = $local_data;
       $params = array( 'consumer_key' => $consumer_key, 'consumer_secret' => $consumer_secret, 'store_url' => $store_url , 'api_endpoint' => $api_endpoint);
+      foreach($retval['data'] as $key => $value ){
+        $retval['data'][$key]->images = $this->get_images_on_product($value->id , 1);
+      }
       $this->load->library('wc_api', $params);
       $remote_count = $this->wc_api->get_products_count();
       $local_count = $this->products_model->rec_count();
@@ -95,7 +116,7 @@ class Admin extends CI_Controller {
       } else {
         // Fetch All Data From Database...
         $retval['prd_count'] = $local_count;
-        if($local_count == $remote_count){
+        if($local_count == $remote_count->count){
           // DO Nothing .. Maybe Just Message
         } else {
           // Need Update
@@ -110,11 +131,21 @@ class Admin extends CI_Controller {
         $local_data = $this->pages_model->get();
         $retval['data'] = $local_data;
       }
+    }  elseif ($page == 'shop'){
+      $local_data = $this->products_model->get();
+      $retval['data'] = $local_data;
     }
     return $retval;
   }
   
   public function post_on_admin_page($postdata, $getdata , $page , $action , $id){
+    if($page == 'shop'){
+      foreach ($postdata as $key => $value) {
+        if ( $this->input->post($key) ){
+            $this->settings_model->update(array('value' => $this->input->post($key, true)), strtoupper($key)); 
+        }
+      }
+    }  
     if($page == 'general'){
       foreach ($postdata as $key => $value) {
         if ( $this->input->post($key) ){
@@ -154,7 +185,10 @@ class Admin extends CI_Controller {
     $this->load->model('settings_model');
 		if(!($this->get_login_session())){
 			redirect('/admin', 'location', 301);
-		} else { 
+		} else {
+		  if($page == 'products'){
+		    
+		  } 
 		  if(isset($_POST) && (count($_POST) !== 0)){
 		    $this->post_on_admin_page($_POST , $_GET , $page, $action , $id);
 		  }

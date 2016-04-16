@@ -27,3 +27,9 @@ First Backend Development Commit
 3. Menu PAge in Admin works now
 4. SQL Dump Provided
 
+17-04-2016
+Attention !!!!! -> Please make dir assets/thumbs for image cache from deposepatu
+1. Add Thumbnail generator library and controller
+2. Add Shop Setting on Backend
+3. Add Favorite Product On Home
+4. Add Newest Product On Home
