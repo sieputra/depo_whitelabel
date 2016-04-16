@@ -33,6 +33,7 @@
 	  <table>
         <thead>
         <tr>
+          <th>&nbsp;</th>
           <th width="">Nama Sepatu</th>
           <th width="140">SKU</th>
           <th width="100">Stok</th>
@@ -49,6 +50,11 @@
           foreach ($page_data['data'] as $key => $product) {
             ?>
             <tr>
+              <td>
+                <?php 
+                  //image processing
+                  echo  img(base_url(array('thumbsgen/load', rawurlencode(base64_encode($product->images)),'50','50',$product->sku .'-xs.png?q=1&zc=1')));?>
+              </td>
               <td>
                 <p>
                 <?php echo $product->name;?>

@@ -16,7 +16,7 @@ jQuery(document).ready(function ($) {
     e.preventDefault(e);
     $.ajax({
      method: "POST",
-     url: "<?php echo base_url() ?>admin/init_table/products",
+     url: "<?php echo base_url() ?>admin/init/products",
      success : function( msg ) {
         $('#init').html(msg + ', Redirect Now...');        
         window.setTimeout(window.location='<?php echo base_url() ?>admin/products.html' , 1000);

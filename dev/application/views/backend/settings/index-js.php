@@ -79,7 +79,7 @@ $('#btn_init_tags').click(function(e){
   e.preventDefault();
   $.ajax({
      method: "POST",
-     url: "<?php echo base_url() ?>admin/init_table/tags",
+     url: "<?php echo base_url() ?>admin/init/tags",
      success : function( msg ) {
                 $('#msg_init').html(msg);
                 $('#btn_init_tags').hide();
@@ -95,7 +95,7 @@ $('#btn_init_attrs').click(function(e){
   e.preventDefault();
   $.ajax({
      method: "POST",
-     url: "<?php echo base_url() ?>admin/init_table/attributes",
+     url: "<?php echo base_url() ?>admin/init/attributes",
      success : function( msg ) {
                 $('#msg_init').html(msg);
                 $('#btn_init_attrs').hide();
@@ -111,7 +111,7 @@ $('#btn_init_cats').click(function(e){
   e.preventDefault();
   $.ajax({
      method: "POST",
-     url: "<?php echo base_url() ?>admin/init_table/categories",
+     url: "<?php echo base_url() ?>admin/init/categories",
      success : function( msg ) {
                 $('#msg_init').html(msg);
                 $('#btn_init_cats').hide();

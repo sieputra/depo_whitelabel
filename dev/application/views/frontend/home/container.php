@@ -8,3 +8,9 @@
       </div>
     </div>
 </section>
+
+<?php 
+
+echo isset($hero) ? $hero : '' ;
+echo isset($newest) ? $newest : '' ;
+?>
