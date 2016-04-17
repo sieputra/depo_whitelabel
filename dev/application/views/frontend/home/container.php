@@ -12,5 +12,6 @@
 <?php 
 
 echo isset($hero) ? $hero : '' ;
+echo isset($info) ? $info : '' ;
 echo isset($newest) ? $newest : '' ;
 ?>

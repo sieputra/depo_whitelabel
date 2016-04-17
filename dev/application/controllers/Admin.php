@@ -157,7 +157,9 @@ class Admin extends CI_Controller {
       $this->load->model('pages_model');
       if(!empty($id) && $action == 'edit' && isset($postdata) && count($postdata) !== 0 ){
         //Update Pages
-        $this->pages_model->update(array('update_by' => $_SESSION['userlogin']->username, 'content' => trim($this->input->post('content', true))) , $id);
+        $this->pages_model->update(array('update_by' => $_SESSION['userlogin']->username, 
+                                          'content' => trim($this->input->post('content', true))
+                                          ,'date_updated' => date('Y-m-d H:m:s')) , $id);
         $this->session->set_flashdata('msg', 'Edit Pages Success');
       } 
       if($action == 'add' && isset($postdata) && count($postdata) !== 0 ){
@@ -205,7 +207,7 @@ class Admin extends CI_Controller {
       if(isset($_SESSION['msg'])){
         $param['msg'] = $_SESSION['msg'];
       }
-      echo $action;
+      
 			$data['container'] = $this->load->view('backend/'.$page.'/container' . (!empty($action) ? '-'.$action : ''), $param, TRUE);
       $param_js['page'] = $page;
       $param_js['action'] = $action;

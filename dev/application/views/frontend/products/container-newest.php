@@ -35,15 +35,6 @@ foreach ($data as $key => $product) {
   $i++;	
 }
 ?>
-<div class="row"  style="padding-bottom:4rem;">
-    <div class="large-12 medium-12 columns">
-      <div class="">
-      <p style="text-align:center;margin-top:40px;">
-          <?php echo anchor('products' ,'Lihat Semua Produk' , array('class' => 'outline-button'))?>
-      </p>
-      </div>
-    </div>
-  </div>
 </div>
 <?php } else {
   ?>
