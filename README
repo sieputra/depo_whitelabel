@@ -33,3 +33,14 @@ Attention !!!!! -> Please make dir assets/thumbs for image cache from deposepatu
 2. Add Shop Setting on Backend
 3. Add Favorite Product On Home
 4. Add Newest Product On Home
+
+17-04-2016
+1. Make Homepage for this items
+	a. Hero - Favorite
+	b. Info
+	c. Newest - according to setting in shop admin
+2. Make Produk Favorite Menu - Top Menu
+3. Make Produk Terbaru Menu - Top Menu, that contains of:
+	a. Side bar per Category
+	b. Grid View For Products
+4. Detail Products Views
