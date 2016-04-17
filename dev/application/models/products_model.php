@@ -22,9 +22,62 @@ class Products_model extends CI_Model {
       return FALSE;
     }
   }
+  
+  public function filter_parent($params_like = array(), $params_where = array(), $num = -1, $order_by = '' , $order_type = 'ASC')
+  {
+    if(count($params_like) !== 0 || count($params_where) !== 0){
+      
+      if(count($params_like) != 0){
+        foreach ($params_like as $key => $value) {
+          $tkey = array_keys($value); $tkey = $tkey[0];  
+          $tvalue = $value[$tkey];
+          $this->db->like($tkey , $tvalue);
+        }
+      }
+      if(count($params_where) != 0){
+        foreach ($params_where as $key => $value) {
+          $tkey = array_keys($value); $tkey = $tkey[0];  
+          $tvalue = $value[$tkey];
+          $this->db->where($tkey , $tvalue);
+        }
+      }
+      $this->db->where('remote_id = remote_upsell_id');
+      if(!empty($order_by)){
+        $this->db->order_by($order_by , $order_type);
+      } 
+      if($num !== -1){
+        $query = $this->db->get($this->_table_name, $num);
+      }else{
+        $query = $this->db->get($this->_table_name);
+      }
+      //$this->krumo->dpm($this->db->last_query());
+      return $query->result();
+    } else {
+      return FALSE;
+    }
+  }
 
   public function get($num = -1, $order_by = '' , $order_type = 'ASC')
   {
+    if(!empty($order_by)){
+      $this->db->order_by($order_by , $order_type);
+    }  
+    if($num !== -1){
+      $query = $this->db->get($this->_table_name, $num);
+    }else{
+      $query = $this->db->get($this->_table_name);
+    }
+    $rs = $query->result();
+    if(isset($rs)){
+      return $rs;
+    } else {
+        return FALSE;
+    }
+  }
+  
+  public function get_parent($num = -1, $order_by = '' , $order_type = 'ASC')
+  {
+    $this->db->where('remote_id = remote_upsell_id');
     if(!empty($order_by)){
       $this->db->order_by($order_by , $order_type);
     }  
@@ -48,6 +101,23 @@ class Products_model extends CI_Model {
         $query = $this->db->where('id_product' , $id)->get('wc_dimages', $num);
       }else{
         $query = $this->db->where('id_product' , $id)->get('wc_dimages');
+      }
+      $rs = $query->result();
+      if(isset($rs)){
+        return $rs;
+      } else {
+          return FALSE;
+      }
+    }
+  }
+  
+  public function get_variations($id = -1 , $num = -1)
+  {
+    if( $id != -1){
+      if($num !== -1){
+        $query = $this->db->where('id_product' , $id)->get('wc_dvariation', $num);
+      }else{
+        $query = $this->db->where('id_product' , $id)->get('wc_dvariation');
       }
       $rs = $query->result();
       if(isset($rs)){

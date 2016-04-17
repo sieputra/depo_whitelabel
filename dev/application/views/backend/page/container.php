@@ -40,7 +40,7 @@
             <td>
               <?php echo $page->title; ?>
             </td>
-            <td><small>Terakhir edit pada</small><br> <?php echo date('d/m/Y' , strtotime($page->date_updated)); ?></td>
+            <td><small>Terakhir edit pada</small><br> <?php echo date('d/m/Y H:m:s' , strtotime($page->date_updated)); ?></td>
             <td>
               <?php echo anchor('admin/page/edit/' .$page->id , '<i class="fa fa-pencil-square-o fa-lg"></i>', array('alt' => 'Edit'));?>
             </td>

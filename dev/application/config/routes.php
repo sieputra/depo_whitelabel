@@ -65,4 +65,7 @@ $route['admin/(:any)/(:any)/(:num)'] = "admin/load_admin_pages/$1/$2/$3";
 
 
 $route['thumbs/(:any)/(:any)/(:any)/(:any)'] = "thumbsgen/$1/$2/$3/$4";
+$route['product/(:num)/(:any)'] = "home/product_detail/$1/$2";
+$route['products'] = "home/products";
+$route['products/(:any)/(:any)/(:any)'] = "home/products/$1/$2/$3";
 $route['(:any)'] = "home/load_page/$1";

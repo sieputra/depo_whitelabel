@@ -1,9 +1,9 @@
 <div class="row" style="padding-bottom:100px;">
 <div class="large-6  medium-6 columns" >
 <?php 
-echo anchor('#' , 
+echo anchor('product/'.$data->id.'/'.htmlentities(urlencode(str_replace(' ', '-', strtolower($data->name)))) , 
                 img(base_url(array('thumbsgen/load', rawurlencode(base64_encode($data->images[0]->src_product)),'570','570',$data->sku .'-l.png?q=50&zc=1'))) ,
-                array('title' => $data->images[0]->title_product, 'alt' => $data->images[0]->alt_product)); ?>  
+                array('style' => 'margin-top:-150px;position:absolute;' , 'title' => $data->images[0]->title_product, 'alt' => $data->images[0]->alt_product)); ?>  
 </div>
 
 
@@ -26,7 +26,7 @@ echo anchor('#' ,
          ?>
          <li>
           <?php 
-          echo anchor($image->src_product , 
+          echo anchor(base_url(array('thumbsgen/load', rawurlencode(base64_encode($image->src_product)),'502','502',$data->sku .'-'. $i . '-ms.png')), 
                           img(base_url(array('thumbsgen/load', rawurlencode(base64_encode($image->src_product)),'50','50',$data->sku .'-'. $i . '-xs.png?q=50&zc=1'))) ,
                           array('title' => $image->title_product, 'alt' => $image->alt_product)); ?>
         </li>
@@ -38,10 +38,9 @@ echo anchor('#' ,
     }
     ?>
   </div>
-  <button href="#" class="button"> 
-  Lihat Produk
-  </button>  
-  
+  <?php 
+  echo anchor('product/'.$data->id.'/'.htmlentities(urlencode(str_replace(' ', '-', strtolower($data->name)))) , 'Lihat Produk' , array('class' => 'button'));
+  ?>
 </div>
 </div>
 

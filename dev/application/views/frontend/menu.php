@@ -1,3 +1,4 @@
+
 <div class="title-bar" data-responsive-toggle="widemenu" data-hide-for="medium" >
   <div class="title-bar-left">
     <button class="menu-icon" type="button" data-open="offCanvasLeft"></button>
@@ -32,8 +33,21 @@
 <div class="off-canvas position-left" id="offCanvasLeft" data-off-canvas>
   <ul class="vertical dropdown menu" data-dropdown-menu style="margin-top: 60px;">
     <li><?php echo anchor('' , 'Beranda', array('alt' => 'Beranda'));?></li>
-    <li><a href="#">Produk Favorit</a></li>
-    <li><a href="#">Produk Terbaru</a></li>
+    <?php
+    if (isset($favorite) && count($favorite) != 0){
+    ?>
+    <li>
+    <?php    
+      echo anchor('product/'.$favorite->id.'/'.htmlentities(urlencode(str_replace(' ', '-', strtolower($favorite->name)))) , 'Produk Favorit' , array() );
+    ?>
+    </li>
+    <?php
+    }
+    ?>
+    <li><?php
+      echo anchor('products' , 'Product Terbaru' , array());
+      ?>
+    </li>
 <li><hr></li>
 <!-- Pages Menu Load-->
 <?php 
@@ -56,18 +70,27 @@ if(isset($pages) && count($pages)!== 0){
     <div class="top-bar-left">
       <ul class="dropdown menu" data-dropdown-menu>
         <li class="menu-text">
-          <a href="index.php" style="padding:0px;">
-          <img class="" src="<?php echo base_url() ?>assets/frontend/logo.png" style="height:25px;width:auto;">
-          </a>
+          <?php
+          echo anchor('' , img(array('src' => base_url() . 'assets/frontend/logo.png', 'style' => 'height:25px;width:auto;') ) , array('style' => 'padding:0px;'));
+          ?>
         </li>
         <li >
           <?php echo anchor('' , 'Beranda', array('alt' => 'Beranda'));?>
         </li>
-        <li >
-          <a href="#">Produk Favorit</a>
+        <?php
+        if (isset($favorite) && count($favorite) != 0){
+        ?>
+        <li>
+        <?php    
+          echo anchor('product/'.$favorite->id.'/'.htmlentities(urlencode(str_replace(' ', '-', strtolower($favorite->name)))) , 'Produk Favorit' , array() );
+        ?>
         </li>
-        <li >
-          <a href="#">Produk Terbaru</a>
+        <?php
+        }
+        ?>
+        <li><?php
+          echo anchor('products' , 'Product Terbaru' , array());
+          ?>
         </li>
         <!-- Pages Menu Load-->
         <?php if(isset($pages) && count($pages)!== 0){ ?>
