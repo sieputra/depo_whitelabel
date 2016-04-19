@@ -68,9 +68,7 @@
               <td><?php echo $product->tags;?></td>
               <td><?php echo date('d/m/Y' , strtotime($product->date_local_update));?></td>
               <td>
-                <a href="single-product.php">
-                <i class="fa fa-pencil-square-o fa-lg"></i>
-                </a>
+                <?php echo anchor('admin/products/edit/' . $product->id , '<i class="fa fa-pencil-square-o fa-lg"></i>' , array());?>
               </td>
             </tr>
             <?php  
