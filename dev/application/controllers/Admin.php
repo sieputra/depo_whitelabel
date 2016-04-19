@@ -181,6 +181,24 @@ class Admin extends CI_Controller {
    redirect('/admin/'.$page, 'location', 301);
   }
   
+  private function _get_images_on_product($id = -1, $num = -1){
+    if($id != -1 ){
+      $this->load->model(array('products_model')); 
+      if($num == 1){
+        $tmp = $this->products_model->get_images($id, $num);
+        if(isset($tmp[0])){
+          return $tmp[0]->src_product; 
+        } else {
+          return FALSE;
+        }
+      } else {
+        return $this->products_model->get_images($id, $num);
+      }
+    } else {
+      return FALSE;
+    }
+  }
+  
 	public function load_admin_pages($page = 'dashboard' , $action = '' , $id = -1)
 	{
     ini_set('display_errors', 1); 
@@ -189,7 +207,26 @@ class Admin extends CI_Controller {
 			redirect('/admin', 'location', 301);
 		} else {
 		  if($page == 'products'){
-		    
+		    if($action == 'edit'){
+		      $this->load->model('products_model');
+		      $param['data'] = $this->products_model->filter(array('id' => $id));
+          if(isset($param['data']) && count($param['data']) > 0){
+            //images
+            foreach ($param['data'] as $key => $value) {
+              $param['data'][$key]->images = $this->_get_images_on_product($value->id , 1);    
+            }
+            //upsell id
+            foreach ($param['data'] as $k => $product) {
+              $upsell_products = $this->products_model->filter(array('remote_upsell_id' => $product->remote_upsell_id));
+              foreach ($upsell_products as $key => $uproduct) {
+                 $upsell_products[$key]->images = $this->_get_images_on_product($uproduct->id , 1);  
+              }
+              $param['data'][$k]->upsell_products = $upsell_products;  
+            }
+            $param['data'] = $param['data'][0];
+          }
+          //$this->krumo->dpm($param['data']);
+		    }  
 		  } 
 		  if(isset($_POST) && (count($_POST) !== 0)){
 		    $this->post_on_admin_page($_POST , $_GET , $page, $action , $id);
