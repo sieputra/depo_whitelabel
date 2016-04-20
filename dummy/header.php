@@ -69,7 +69,7 @@ type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
 		<li><a href="page.php">Size Chart</a></li>
 		<li><a href="page.php">Syarat dan Ketentuan</a></li>
 		<li><a href="page.php">Pengembalian Barang</a></li>
-      </ul>
+      </ul>    
     </div>
 
    
@@ -104,6 +104,7 @@ type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
               <li><a href="page.php">Pengembalian Barang</a></li>
             </ul>
           </li>
+<li>DUMMY</li>          
         </ul>
       </div>
       <div class="top-bar-right">
