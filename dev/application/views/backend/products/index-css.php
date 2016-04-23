@@ -4,3 +4,7 @@ ul.listprod li {
     margin-right: 10px;
     width: 60px;
 }
+
+.icon-unpublish{
+  color : #F00;
+}

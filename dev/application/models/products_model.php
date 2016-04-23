@@ -23,7 +23,7 @@ class Products_model extends CI_Model {
     }
   }
   
-  public function filter_parent($params_like = array(), $params_where = array(), $num = -1, $order_by = '' , $order_type = 'ASC')
+  public function filter_parent($params_like = array(), $params_where = array(), $num = -1, $order_by = '' , $order_type = 'ASC' , $offset = -1)
   {
     if(count($params_like) !== 0 || count($params_where) !== 0){
       
@@ -46,7 +46,7 @@ class Products_model extends CI_Model {
         $this->db->order_by($order_by , $order_type);
       } 
       if($num !== -1){
-        $query = $this->db->get($this->_table_name, $num);
+        $query = $this->db->get($this->_table_name, $num, (($offset != -1) ? $offset : 0));
       }else{
         $query = $this->db->get($this->_table_name);
       }
@@ -75,14 +75,14 @@ class Products_model extends CI_Model {
     }
   }
   
-  public function get_parent($num = -1, $order_by = '' , $order_type = 'ASC')
+  public function get_parent($num = -1, $order_by = '' , $order_type = 'ASC', $offset = -1)
   {
     $this->db->where('remote_id = remote_upsell_id');
     if(!empty($order_by)){
       $this->db->order_by($order_by , $order_type);
     }  
     if($num !== -1){
-      $query = $this->db->get($this->_table_name, $num);
+      $query = $this->db->get($this->_table_name, $num , (($offset != -1) ? $offset : 0));
     }else{
       $query = $this->db->get($this->_table_name);
     }
@@ -147,7 +147,7 @@ class Products_model extends CI_Model {
       foreach ($params as $name => $param) {
         $upd[$name] = $param;
       }
-      $this->db->where('key', $key);
+      $this->db->where('id', $key);
       $this->db->update($this->_table_name, $upd);
     } else {
        return FALSE; 

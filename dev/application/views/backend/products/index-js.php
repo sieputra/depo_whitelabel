@@ -39,5 +39,13 @@ jQuery(document).ready(function ($) {
      },
   });
   });
+  
+  $( "#num" ).change(function() {
+    $('#frm_produk').submit();
+  });
+  
+  $( ".curpage" ).click(function() {
+    $('#frm_produk').submit();
+  });
 });
 ////// --------------- Module  JS

@@ -1,6 +1,8 @@
+<?php 
+$hidden = array();
+echo form_open('' , array(), $hidden); ?>
 <div class="row page single" >
   <div class="large-12 columns">
-  
   <div class="row">
     <div class="large-4 columns">
       <h4>Ubah Produk</h4>
@@ -21,10 +23,6 @@
         <div class="row">
           <div class="large-12 columns" style="text-align: center">
             <?php echo img(array('src' => base_url(array('thumbsgen/load', rawurlencode(base64_encode($data->images)),'510','510',$data->sku .'-epm.png?q=50&zc=1'))));?>
-            <br>
-            <button class="file-upload button hollow button center"><input type="file" class="file-input">
-                Upload Gambar
-            </button>
           </div>
         </div>
       </div>
@@ -39,9 +37,23 @@
               <label for="right-label" class="right inline">Kategori</label>
             </div>
             <div class="large-9 columns">
-              <textarea name="categories" readonly="readonly" style="height:100px;"
-              placeholder="Edit Kategori"
-              ><?php echo (isset($data->categories) ? $data->categories : '')?></textarea> 
+              <?php
+              if(isset($data->categories)){
+                $cats = explode(',', $data->categories);
+              ?>
+              <ul>
+                <?php
+                foreach ($cats as $key => $value) {
+                  ?>
+                  <li><?php echo ucfirst(trim($value)); ?></li>
+                  <?php  
+                }
+                ?>
+              </ul>  
+              <?php  
+              }
+              ?>
+              
             </div>
           </div>
           
@@ -50,9 +62,22 @@
               <label for="right-label" class="right inline">Tag</label>
             </div>
             <div class="large-9 columns">
-              <textarea name="tags" readonly="readonly" style="height:100px;"
-              placeholder="Edit Tags"
-              ><?php echo (isset($data->tags) ? $data->tags : '')?></textarea> 
+              <?php
+              if(isset($data->tags)){
+                $tags = explode(',', $data->tags);
+              ?>
+              <ul>
+                <?php
+                foreach ($tags as $key => $value) {
+                  ?>
+                  <li><?php echo ucfirst(trim($value)); ?></li>
+                  <?php  
+                }
+                ?>
+              </ul>  
+              <?php  
+              }
+              ?>
             </div>
           </div>
           
@@ -134,7 +159,7 @@
         </div>
         <div class="large-9 columns">
           <textarea style="height:180px" name="description" class="editor"
-          placeholder="Edit Deskripsi Produk"
+          placeholder="Edit Deskripsi Produk" name="description"
           ><?php echo (isset($data->description) ? $data->description : '')?></textarea>
         </div>
       </div>
@@ -146,9 +171,9 @@
         <div class="large-9 columns">
           <div class="row">
           <div class="large-2 columns">
-            <select name="discount">
-              <option value="diskon-tidak">Tidak</option> 
-              <option value="diskon-ya">Ya</option>
+            <select name="disc_label_status">
+              <option value="0" <?php echo (($data->disc_label_status == 0) ? 'selected="selected"' : '')?>>Tidak</option> 
+              <option value="1" <?php echo (($data->disc_label_status == 1) ? 'selected="selected"' : '')?>>Ya</option>
               
               </select>
           </div>
@@ -159,7 +184,7 @@
                 <label for="right-label" class="right inline">Label Diskon</label>
               </div>
               <div class="large-6 columns">
-                <input type="text" id="right-label" name="disc_value" placeholder="-50%">
+                <input type="text" id="right-label" name="disc_label_txt" placeholder="50" value="<?php echo (isset($data->disc_label_txt) ? $data->disc_label_txt : '0')?>">
               </div>
             </div>
           </div>
@@ -170,13 +195,11 @@
           </div>
         </div>
       </div>
-      
       </div>
-      
       <hr>
-      <a href="#" class="button small right">Simpan</a>
-      
+      <button type="submit" class="button small right">Simpan</button>
     </div>
   </div>
   </div>
 </div>
+<?php echo form_close(); ?>
