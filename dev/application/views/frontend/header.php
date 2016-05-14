@@ -21,6 +21,9 @@
   <?php echo (isset($zopim_code)) ? $zopim_code : '';?>
   </script>
   <!--End of Zopim Live Chat Script-->
+  <style>
+  <?php echo (isset($cssload) && !empty($cssload) ? $cssload : '')?>
+  </style>
   </head>
   <body>
   <div class="off-canvas-wrapper">

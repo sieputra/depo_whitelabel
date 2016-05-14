@@ -69,6 +69,7 @@
         console.log(e);
       });
     });
+    <?php echo (isset($jsload) && !empty($jsload) ? $jsload : '')?>
   </script> 
   </body>
 </html> 

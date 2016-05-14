@@ -186,8 +186,11 @@ class Home extends CI_Controller {
   }
   
   public function product_detail($id = -1){
+    $this->load->model('settings_model');
+    
     $this->load->model(array('products_model', 'categories_model' , 'tags_model'));
     $products = $this->products_model->filter(array('id' => $id));
+    
     //imagess
     foreach ($products as $key => $product) {
        $products[$key]->images = $this->_get_images_on_product($product->id); 
@@ -229,20 +232,49 @@ class Home extends CI_Controller {
       $upsell_products = $this->products_model->filter(array('remote_upsell_id' => $product->remote_upsell_id));
       foreach ($upsell_products as $key => $uproduct) {
          $upsell_products[$key]->images = $this->_get_images_on_product($uproduct->id , 1);  
+         
+        
       }
       $products[$k]->upsell_products = $upsell_products;  
     }
     //$this->krumo->dpm($products);
+    //die();
     $param['pages'] = $this->pages_model->get(array('id', 'slug', 'title'));  
     $param['settings'] = $this->settings_model->get_settings('shop');
     $param['favorite'] = $this->_get_favorite_product();
     $param['menu'] = $this->load->view('frontend/menu' , $param , TRUE);
+    $param['cssload'] = $this->load->view('frontend/products/index-css' , array() , TRUE);
     $data['header'] = $this->load->view('frontend/header' , $param , TRUE);
-    $data['footer'] = $this->load->view('frontend/footer' , array() , TRUE);
+    $datafooter['jsload'] = $this->load->view('frontend/products/index-js' , (isset($products[0])) ? array('products' => $products[0]) : array() , TRUE);
+    $data['footer'] = $this->load->view('frontend/footer' , $datafooter , TRUE);
     $paramcontainer['products'] = $products[0];
     $paramcontainer['settings_general'] = $this->settings_model->get_settings('general');
     $data['container'] = $this->load->view('frontend/products/container' , $paramcontainer , TRUE);
     $this->load->view('frontend/index' , $data);
+  }
+
+  public function load_qty_product($parent_remote_ids = -1){
+    //fucntion to handle ajax call from home controller, not used for normal controller
+    $retval = FALSE;  
+    if($parent_remote_ids != -1){
+      $settings = $this->settings_model->get_settings('settings');
+      $consumer_key = $settings['CUSTOMER_KEY']; 
+      $consumer_secret = $settings['CUSTOMER_SECRET']; 
+      $store_url = $settings['API_URL']; 
+      $api_endpoint = $settings['API_END_POINT']; 
+      $params = array( 'consumer_key' => $consumer_key, 'consumer_secret' => $consumer_secret, 'store_url' => $store_url , 'api_endpoint' => $api_endpoint);
+      $this->load->library('wc_api', $params);
+      $data = $this->wc_api->get_product($parent_remote_ids); 
+      $tvariations = array();
+      foreach ($data->product->variations as $key => $variation) {
+       $tvariations[] = array( 'id' => $variation->id , 
+                                'qty' => $variation->stock_quantity);     
+      }
+
+      $retval = json_encode($tvariations);
+
+    }
+    echo $retval;
   }
 
   public function products($action = '' , $hash = ''){

@@ -79,7 +79,7 @@
               ?>
               <tr>
                 <td class="mdl-data-table__cell--non-numeric"><?php echo $variation->attributes_json[0]->option?></td>
-                <td class="load" id="<?php echo $variation->id ?>">Loading</td>
+                <td class="load" id="<?php echo $variation->remote_id ?>">Preparing..</td>
               </tr>
               <?php   
               }
