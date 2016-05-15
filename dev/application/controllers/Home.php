@@ -268,6 +268,7 @@ class Home extends CI_Controller {
       $tvariations = array();
       foreach ($data->product->variations as $key => $variation) {
        $tvariations[] = array( 'id' => $variation->id , 
+                                'var_name' => (isset($variation->attributes[0]->option)) ? $variation->attributes[0]->option : '',
                                 'qty' => $variation->stock_quantity);     
       }
 

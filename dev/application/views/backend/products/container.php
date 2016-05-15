@@ -106,7 +106,7 @@ echo form_open('' , array('method' => 'GET' , 'id' => 'frm_produk'), $hidden); ?
               </td>
               
               <td><?php echo $product->sku;?></td>
-              <td>&nbsp;</td>
+              <td class="stock_qty" id="<?php echo $product->remote_id; ?>">Preparing</td>
               <td><?php echo  number_format( $product->price);?></td>
               <td><?php echo $product->categories;?></td>
               <td><?php echo date('d/m/Y H:m:i:s' , strtotime($product->date_local_update));?></td>

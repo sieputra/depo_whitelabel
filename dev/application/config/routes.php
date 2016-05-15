@@ -53,8 +53,8 @@ $route['default_controller'] = 'home';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-
 $route['admin'] = "admin/index";
+$route['admin/get_qty_product/(:num)'] = "admin/get_qty_product/$1";
 $route['admin/user/logout'] = "admin/logout";
 $route['admin/user/login'] = "admin/login";
 $route['admin/user/settings'] = "admin/load_settings";
@@ -62,7 +62,6 @@ $route['admin/init/(:any)'] = "admin/init_table/$1";
 $route['admin/(:any)'] = "admin/load_admin_pages/$1";
 $route['admin/(:any)/(:any)'] = "admin/load_admin_pages/$1/$2";
 $route['admin/(:any)/(:any)/(:num)'] = "admin/load_admin_pages/$1/$2/$3";
-
 
 $route['thumbs/(:any)/(:any)/(:any)/(:any)'] = "thumbsgen/$1/$2/$3/$4";
 $route['product/(:num)/(:any)'] = "home/product_detail/$1/$2";

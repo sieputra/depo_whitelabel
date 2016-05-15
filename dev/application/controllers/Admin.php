@@ -10,6 +10,8 @@ class Admin extends CI_Controller {
 	public function __construct() {
         parent::__construct();
         $this->load->helper(array('html'));
+        $this->load->model(array('settings_model'));
+        
     		if(DEPO_DEBUG){
     		  $this->load->add_package_path(APPPATH.'third_party/debugbar');
           $this->load->library('krumo');
@@ -230,6 +232,50 @@ class Admin extends CI_Controller {
 			redirect('/admin/dashboard', 'location');
 		}
 	}
+
+
+  public function get_qty_product($parent_remote_ids = -1 , $child_remote_ids = -1, $json = TRUE){
+    $retval = FALSE;  
+    if($parent_remote_ids != -1){
+      $settings = $this->settings_model->get_settings('settings');
+      $consumer_key = $settings['CUSTOMER_KEY']; 
+      $consumer_secret = $settings['CUSTOMER_SECRET']; 
+      $store_url = $settings['API_URL']; 
+      $api_endpoint = $settings['API_END_POINT']; 
+      $params = array( 'consumer_key' => $consumer_key, 'consumer_secret' => $consumer_secret, 'store_url' => $store_url , 'api_endpoint' => $api_endpoint);
+      $this->load->library('wc_api', $params);
+      $data = $this->wc_api->get_product($parent_remote_ids); 
+      if(isset($data->product->variations)){
+        $tvariations = array();
+        foreach ($data->product->variations as $key => $variation) {
+           if($child_remote_ids == -1){
+             //Add All Data with   
+             $tvariations[] = array( 'id' => $variation->id , 
+                                      'var_name' => (isset($variation->attributes[0]->option)) ? $variation->attributes[0]->option : '',
+                                      'qty' => $variation->stock_quantity);   
+           } else {
+             if($variation->id == $child_remote_ids){
+               //Add Selcted Id Data
+               $tvariations[] = array( 'id' => $variation->id , 
+                                        'var_name' => (isset($variation->attributes[0]->option)) ? $variation->attributes[0]->option : '',
+                                        'qty' => $variation->stock_quantity);  
+             }                         
+           }                           
+        }
+        if($json){
+          $retval = json_encode($tvariations);
+        } else {
+          $retval = ($tvariations);
+        }
+      }
+    }
+    if($json){
+      echo $retval;
+    } else{
+      return $retval;
+    }
+  }
+  
 	
   private function get_images_on_product($id = -1, $num = -1){
     if($id != -1 && $num != -1){
@@ -286,9 +332,9 @@ class Admin extends CI_Controller {
                                                             'DESC', 
                                                             (isset($getdata['curpage']) ? (($getdata['curpage'] - 1) * $getdata['num'])  : -1));
         $retval['total_data'] = count($this->products_model->filter_parent($filters, array(),-1, 'date_remote_created' , 'DESC'));
-        //images
         foreach ($local_data as $key => $value) {
-          $local_data[$key]->images = $this->_get_images_on_product($value->id , 1);    
+          //images  
+          $local_data[$key]->images = $this->_get_images_on_product($value->id , 1);   
         }
         $retval['data'] = $local_data;
         $categories = $this->categories_model->filter(array('slug' => 'brand'));
@@ -314,6 +360,7 @@ class Admin extends CI_Controller {
                                                           'DESC', 
                                                           (isset($getdata['curpage']) ? (($getdata['curpage'] - 1) * $getdata['num'])  : -1));
         $retval['total_data'] = count($this->products_model->get_parent(-1 , 'date_remote_created' , 'DESC' ));
+        
         $retval['data'] = $local_data;
         $categories = $this->categories_model->filter(array('slug' => 'brand'));
         if(isset($categories[0])){
@@ -470,6 +517,8 @@ class Admin extends CI_Controller {
               foreach ($upsell_products as $key => $uproduct) {
                  $upsell_products[$key]->images = $this->_get_images_on_product($uproduct->id , 1);  
               }
+              //variations
+              $param['data'][$k]->variations = $this->get_qty_product($product->remote_id , -1 , FALSE);
               $param['data'][$k]->upsell_products = $upsell_products;  
             }
             $param['data'] = $param['data'][0];

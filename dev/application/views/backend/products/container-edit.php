@@ -87,7 +87,16 @@ echo form_open('' , array(), $hidden); ?>
               <label for="right-label" class="right inline">Stok</label>
             </div>
             <div class="large-9 columns">
-              <a class="disabled expanded secondary button" href="#">Stok di update otomatis (live) dari website DepoSepatu :)</a>
+              <a class="disabled expanded secondary button" href="#">
+              <?php 
+                foreach ($data->variations as $key => $variation) {
+                  if($variation['qty'] !== 0){
+                    $v[] = $variation['var_name'];
+                  }    
+                }
+                echo implode (', ' , $v);
+                ?>
+              </a>
             </div>
           </div>  
         </div>

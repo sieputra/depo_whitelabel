@@ -47,5 +47,30 @@ jQuery(document).ready(function ($) {
   $( ".curpage" ).click(function() {
     $('#frm_produk').submit();
   });
+  
+  $( ".stock_qty" ).each(function( index ) {
+    var remote_id = $(this).attr('id');
+    console.log( $(this).attr('id') + ' processing...');
+    $.ajax({
+      url: "<?php echo base_url(); ?>admin/get_qty_product/"+remote_id,
+      dataType: 'json',
+      beforeSend : function(e){
+                     $('#'+remote_id).html('Processing...');
+                   },
+      error : function( jqXHR ,  textStatus,  errorThrown ){
+                alert(textStatus);
+              },
+      success : function( data, textStatus, jqXHR ){
+                  var var_name = new Array();var i = 0;
+                  $.each(data, function(index, variation) {
+                    if(variation['qty'] != 0){
+                    var_name[i] = variation['var_name'];
+                    i++;
+                    }
+                  });
+                  $('#'+remote_id).html(var_name.join(', '));
+                },
+    });
+  });
 });
 ////// --------------- Module  JS
